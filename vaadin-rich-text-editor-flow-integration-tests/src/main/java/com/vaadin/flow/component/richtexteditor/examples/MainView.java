@@ -9,7 +9,7 @@ import com.vaadin.flow.router.Route;
 @Route
 public class MainView extends VerticalLayout {
 
-    final Div valuePanel,
+    private Div valuePanel,
               htmlValuePanel;
 
     public MainView() {
@@ -19,20 +19,20 @@ public class MainView extends VerticalLayout {
         htmlValuePanel = new Div();
         htmlValuePanel.setId("htmlValuePanel");
 
-        final RichTextEditor rte = new RichTextEditor();
+        RichTextEditor rte = new RichTextEditor();
 
-        final Button setValueButton = new Button("Set value");
+        Button setValueButton = new Button("Set value");
         setValueButton.setId("setValue");
         setValueButton.addClickListener(event -> rte.setValue("[{\"insert\":\"Foo\"}]"));
 
-        final Button getValueButton = new Button("Get value");
+        Button getValueButton = new Button("Get value");
         getValueButton.setId("getValue");
         getValueButton.addClickListener(event -> {
             String value = rte.getValue();
             valuePanel.setText(value);
         });
 
-        final Button getHtmlValueButton = new Button("Get htmlValue");
+        Button getHtmlValueButton = new Button("Get htmlValue");
         getHtmlValueButton.setId("getHtmlValue");
         getHtmlValueButton.addClickListener(event -> {
             String htmlValue = rte.getHtmlValue();

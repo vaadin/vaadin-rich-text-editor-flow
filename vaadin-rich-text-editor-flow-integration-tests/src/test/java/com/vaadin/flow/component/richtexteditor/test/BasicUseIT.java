@@ -22,19 +22,19 @@ public class BasicUseIT extends AbstractParallelTest {
 
     @Test
     public void setValueCorrectly() {
-        $(RichTextEditorElement.class).waitForFirst().getEditor().sendKeys("Bar");
+        $(RichTextEditorElement.class).waitForFirst().getEditor().setProperty("innerHTML", "<p>Bar</p>");
         ButtonElement getValue = getTestButton("getValue");
         ButtonElement getHtmlValue = getTestButton("getHtmlValue");
 
         waitUntil(driver -> {
             getValue.click();
             getHtmlValue.click();
-            return getLastValue().equals("[{\"insert\":\"BarFoo\\n\"}]") &&
+            return getLastValue().equals("[{\"insert\":\"Bar\\n\"}]") &&
                    getLastHtmlValue().equals("<p>BarFoo</p>");
         });
 
-        Assert.assertEquals("[{\"insert\":\"BarFoo\\n\"}]", getLastValue());
-        Assert.assertEquals("<p>BarFoo</p>", getLastHtmlValue());
+        Assert.assertEquals("[{\"insert\":\"Bar\"}]", getLastValue());
+        Assert.assertEquals("<p>Bar</p>", getLastHtmlValue());
     }
 
     @Test

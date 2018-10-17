@@ -142,7 +142,7 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
     /**
      * Value of the editor presented as HTML string.
      *
-     * @return the {@code label} property from the webcomponent
+     * @return the {@code htmlValue} property from the webcomponent
      */
     public String getHtmlValue() {
         return getHtmlValueString();
