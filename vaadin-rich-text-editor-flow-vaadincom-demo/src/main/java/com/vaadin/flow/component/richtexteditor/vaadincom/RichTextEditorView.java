@@ -17,11 +17,11 @@ public class RichTextEditorView extends DemoView {
 
     private void createDefaultEditor() {
         // begin-source-example
-        // source-example-heading: Default rich-text-editor
-        RichTextEditor rte = new RichTextEditor("Vaadin rich text editor");
+        // source-example-heading: Basic Rich Text Editor
+        RichTextEditor rte = new RichTextEditor();
         // end-source-example
 
-        addCard("Default rich-text-editor", rte);
+        addCard("Basic Rich Text Editor", rte);
     }
 
 }
