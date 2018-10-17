@@ -196,7 +196,7 @@ import com.vaadin.flow.component.AbstractSinglePropertyField;
  * </p>
  */
 @Generated({ "Generator: com.vaadin.generator.ComponentGenerator#1.2-SNAPSHOT",
-        "WebComponent: Vaadin.RichTextEditorElement#0.1.0",
+        "WebComponent: Vaadin.RichTextEditorElement#1.0.0-alpha2",
         "Flow#1.2-SNAPSHOT" })
 @Tag("vaadin-rich-text-editor")
 @HtmlImport("frontend://bower_components/vaadin-rich-text-editor/src/vaadin-rich-text-editor.html")
