@@ -30,10 +30,10 @@ public class BasicUseIT extends AbstractParallelTest {
             getValue.click();
             getHtmlValue.click();
             return getLastValue().equals("[{\"insert\":\"Bar\\n\"}]") &&
-                   getLastHtmlValue().equals("<p>BarFoo</p>");
+                   getLastHtmlValue().equals("<p>Bar</p>");
         });
 
-        Assert.assertEquals("[{\"insert\":\"Bar\"}]", getLastValue());
+        Assert.assertEquals("[{\"insert\":\"Bar\\n\"}]", getLastValue());
         Assert.assertEquals("<p>Bar</p>", getLastHtmlValue());
     }
 
