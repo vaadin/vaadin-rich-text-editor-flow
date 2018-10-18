@@ -19,8 +19,6 @@ public class RichTextEditorView extends DemoView {
         createGetHtmlValue();
     }
 
-    String savedValue;
-
     private void createDefaultEditor() {
         // begin-source-example
         // source-example-heading: Basic Rich Text Editor
@@ -33,12 +31,13 @@ public class RichTextEditorView extends DemoView {
     private void createGetValue() {
         // begin-source-example
         // source-example-heading: Save Rich Text Editor value
+        Div valueBlock = new Div();
         RichTextEditor rte = new RichTextEditor();
-        Button saveBtn = new Button("Save value", e -> savedValue = rte.getValue());
-        Button setBtn = new Button("Set value", e ->  rte.setValue(savedValue));
+        Button saveBtn = new Button("Save value", e -> valueBlock.setText(rte.getValue()));
+        Button setBtn = new Button("Set value", e ->  rte.setValue(valueBlock.getText()));
         // end-source-example
 
-        addCard("Save Rich Text Editor value", rte, saveBtn, setBtn);
+        addCard("Save Rich Text Editor value", rte, saveBtn, setBtn, valueBlock);
     }
 
     private void createGetHtmlValue() {
