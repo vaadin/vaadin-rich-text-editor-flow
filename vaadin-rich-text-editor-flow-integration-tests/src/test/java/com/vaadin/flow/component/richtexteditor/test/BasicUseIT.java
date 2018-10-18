@@ -22,7 +22,7 @@ public class BasicUseIT extends AbstractParallelTest {
 
     @Test
     public void setValueCorrectly() {
-        $(RichTextEditorElement.class).waitForFirst().getEditor().setProperty("innerHTML", "<p>Bar</p>");
+        setHTML("<p>Bar</p>");
         ButtonElement getValue = getTestButton("getValue");
         ButtonElement getHtmlValue = getTestButton("getHtmlValue");
 
@@ -53,7 +53,19 @@ public class BasicUseIT extends AbstractParallelTest {
         Assert.assertEquals("<p>Foo</p>", getLastHtmlValue());
     }
 
+    @Test
+    public void getHtmlValueChangeEventCorrect() {
+        setHTML("<p>Bar</p>");
+        waitUntil(driver -> Integer.parseInt(getLastEventCount()) == 2);
+        setHTML("<p>Baz</p>");
+        waitUntil(driver -> Integer.parseInt(getLastEventCount()) == 3);
+    }
+
     private ButtonElement getTestButton(String id) {
         return $(ButtonElement.class).onPage().id(id);
+    }
+
+    private void setHTML(String s) {
+        $(RichTextEditorElement.class).waitForFirst().getEditor().setProperty("innerHTML", s);
     }
 }

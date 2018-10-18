@@ -81,4 +81,8 @@ public abstract class AbstractParallelTest extends ParallelTest {
     protected String getLastHtmlValue() {
         return $("div").id("htmlValuePanel").getText();
     }
+
+    protected String getLastEventCount() {
+        return $("div").id("eventPanel").getText();
+    }
 }

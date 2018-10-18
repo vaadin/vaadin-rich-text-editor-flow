@@ -10,11 +10,17 @@ import com.vaadin.flow.router.Route;
 public class MainView extends VerticalLayout {
 
     private Div valuePanel,
-              htmlValuePanel;
+                eventPanel,
+                htmlValuePanel;
+
+    private int eventCounter;
 
     public MainView() {
         valuePanel = new Div();
         valuePanel.setId("valuePanel");
+
+        eventPanel = new Div();
+        eventPanel.setId("eventPanel");
 
         htmlValuePanel = new Div();
         htmlValuePanel.setId("htmlValuePanel");
@@ -24,6 +30,8 @@ public class MainView extends VerticalLayout {
         Button setValueButton = new Button("Set value");
         setValueButton.setId("setValue");
         setValueButton.addClickListener(event -> rte.setValue("[{\"insert\":\"Foo\"}]"));
+
+        rte.addHtmlValueChangeListener(event -> eventPanel.setText(String.valueOf(eventCounter++)));
 
         Button getValueButton = new Button("Get value");
         getValueButton.setId("getValue");
@@ -40,6 +48,6 @@ public class MainView extends VerticalLayout {
         });
 
         setHeight("100%");
-        add(rte, setValueButton, getValueButton, getHtmlValueButton, valuePanel, htmlValuePanel);
+        add(rte, setValueButton, getValueButton, getHtmlValueButton, valuePanel, eventPanel, htmlValuePanel);
     }
 }
