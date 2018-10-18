@@ -53,6 +53,22 @@ public class BasicUseIT extends AbstractParallelTest {
         Assert.assertEquals("<p>Foo</p>", getLastHtmlValue());
     }
 
+    @Test
+    public void setAndGetI18nCorrect() {
+        ButtonElement setI18n = getTestButton("setI18n");
+        ButtonElement getI18n = getTestButton("getI18n");
+        setI18n.click();
+        getI18n.click();
+
+        Assert.assertEquals("{\"alignCenter\":\"15\",\"alignLeft\":\"14\",\"alignRight\":\"16\"," +
+                "\"blockquote\":\"18\",\"bold\":\"3\",\"clean\":\"20\"," +
+                "\"codeBlock\":\"19\",\"h1\":\"7\",\"h2\":\"8\",\"h3\":\"9\"," +
+                "\"image\":\"17\",\"italic\":\"4\",\"listBullet\":\"13\"," +
+                "\"listOrdered\":\"12\",\"redo\":\"2\",\"strike\":\"6\"," +
+                "\"subscript\":\"10\",\"superscript\":\"11\",\"underline\":\"5\"," +
+                "\"undo\":\"1\"}", getLastI18nValue());
+    }
+
     private ButtonElement getTestButton(String id) {
         return $(ButtonElement.class).onPage().id(id);
     }
