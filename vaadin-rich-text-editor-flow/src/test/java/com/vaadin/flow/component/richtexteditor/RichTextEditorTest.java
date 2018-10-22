@@ -34,4 +34,33 @@ public class RichTextEditorTest {
         Assert.assertEquals(rte.getEmptyValue(),
                 rte.getElement().getProperty("value"));
     }
+
+    @Test
+    public void setMaliciousScript() {
+        // Check if basic whitelist is applied
+        RichTextEditor rte = new RichTextEditor();
+        Assert.assertEquals(rte.sanitize("<script>alert('Foo')</script>"),
+                "");
+    }
+
+    @Test
+    public void setMaliciousImgHTTP() {
+        RichTextEditor rte = new RichTextEditor();
+        Assert.assertEquals(rte.sanitize("<img src='http://vaadin.com'>"),
+                "<img>");
+    }
+
+    @Test
+    public void setMaliciousImgHTTPS() {
+        RichTextEditor rte = new RichTextEditor();
+        Assert.assertEquals(rte.sanitize("<img src='https://vaadin.com'>"),
+                "<img>");
+    }
+
+    @Test
+    public void setValidImgData() {
+        RichTextEditor rte = new RichTextEditor();
+        Assert.assertEquals(rte.sanitize("<img src=\"data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==\">"),
+                "<img src=\"data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==\">");
+    }
 }
