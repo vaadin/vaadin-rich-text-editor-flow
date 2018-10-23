@@ -158,7 +158,8 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
     }
 
     /**
-     * Sets the value of this editor. If the new value is not equal to
+     * Sets the value of this editor. Should be in Delta format. 
+     * If the new value is not equal to
      * {@code getValue()}, fires a value change event. Throws
      * {@code NullPointerException}, if the value is null.
      * <p>
@@ -166,7 +167,7 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
      * integrates with the editor, as long as no new converter is defined.
      *
      * @param value
-     *            the new value, not {@code null}
+     *            the new value in Delta format, not {@code null}
      */
     @Override
     public void setValue(String value) {
@@ -174,7 +175,7 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
     }
 
     /**
-     * Returns the current value of the text editor. By default, the empty
+     * Returns the current value of the text editor in Delta format. By default, the empty
      * editor will return an empty string.
      *
      * @return the current value.
