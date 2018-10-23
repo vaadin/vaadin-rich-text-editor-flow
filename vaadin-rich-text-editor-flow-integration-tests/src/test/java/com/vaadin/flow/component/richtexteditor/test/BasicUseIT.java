@@ -60,13 +60,8 @@ public class BasicUseIT extends AbstractParallelTest {
         setI18n.click();
         getI18n.click();
 
-        Assert.assertEquals("{\"alignCenter\":\"15\",\"alignLeft\":\"14\",\"alignRight\":\"16\"," +
-                "\"blockquote\":\"18\",\"bold\":\"3\",\"clean\":\"20\"," +
-                "\"codeBlock\":\"19\",\"h1\":\"7\",\"h2\":\"8\",\"h3\":\"9\"," +
-                "\"image\":\"17\",\"italic\":\"4\",\"listBullet\":\"13\"," +
-                "\"listOrdered\":\"12\",\"redo\":\"2\",\"strike\":\"6\"," +
-                "\"subscript\":\"10\",\"superscript\":\"11\",\"underline\":\"5\"," +
-                "\"undo\":\"1\"}", getLastI18nValue());
+        Assert.assertEquals(getLastI18nValue(),
+                $(RichTextEditorElement.class).waitForFirst().getTitles().toString());
     }
 
     private ButtonElement getTestButton(String id) {

@@ -4,9 +4,7 @@ import com.vaadin.flow.component.richtexteditor.RichTextEditor;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.internal.JsonSerializer;
 import com.vaadin.flow.router.Route;
-import elemental.json.JsonObject;
 
 @Route
 public class MainView extends VerticalLayout {
@@ -48,7 +46,7 @@ public class MainView extends VerticalLayout {
         Button setI18n = new Button("Set Custom i18n");
         setI18n.setId("setI18n");
         setI18n.addClickListener(event -> {
-            RichTextEditor.RTEI18n i18n = createCustomI18n();
+            RichTextEditor.RichTextEditorI18n i18n = createCustomI18n();
             rte.setI18n(i18n);
         });
 
@@ -56,9 +54,7 @@ public class MainView extends VerticalLayout {
         getI18n.setId("getI18n");
         getI18n.addClickListener(event -> {
             if (rte.getI18n() != null) {
-                JsonObject i18nObject = (JsonObject) JsonSerializer
-                        .toJson(rte.getI18n());
-                i18nPanel.setText(i18nObject.toString());
+                i18nPanel.setText(rte.getI18n().toString());
             } else {
                 i18nPanel.setText("null");
             }
@@ -68,8 +64,8 @@ public class MainView extends VerticalLayout {
         add(rte, setValueButton, getValueButton, getHtmlValueButton, setI18n, getI18n, valuePanel, htmlValuePanel, i18nPanel);
     }
 
-    private RichTextEditor.RTEI18n createCustomI18n () {
-        RichTextEditor.RTEI18n i18n = new RichTextEditor.RTEI18n()
+    private RichTextEditor.RichTextEditorI18n createCustomI18n () {
+        RichTextEditor.RichTextEditorI18n i18n = new RichTextEditor.RichTextEditorI18n()
                 .setUndo("1").setRedo("2").setBold("3")
                 .setItalic("4").setUnderline("5").setStrike("6")
                 .setH1("7").setH2("8").setH3("9")
