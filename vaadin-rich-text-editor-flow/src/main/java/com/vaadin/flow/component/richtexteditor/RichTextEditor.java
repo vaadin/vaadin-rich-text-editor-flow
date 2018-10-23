@@ -42,19 +42,19 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
     implements HasSize, HasValueChangeMode, InputNotifier, KeyNotifier, CompositionNotifier {
 
     private ValueChangeMode currentMode;
-    private RTEI18n i18n;
+    private RichTextEditorI18n i18n;
 
     /**
      * Gets the internationalization object previously set for this component.
      * <p>
      * Note: updating the object content that is gotten from this method will
      * not update the lang on the component if not set back using
-     * {@link RichTextEditor#setI18n(RTEI18n)}
+     * {@link RichTextEditor#setI18n(RichTextEditorI18n)}
      *
      * @return the i18n object. It will be <code>null</code>, If the i18n
      *         properties weren't set.
      */
-    public RTEI18n getI18n() {
+    public RichTextEditorI18n getI18n() {
         return i18n;
     }
 
@@ -64,7 +64,7 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
      * @param i18n
      *            the internationalized properties, not <code>null</code>
      */
-    public void setI18n(RTEI18n i18n) {
+    public void setI18n(RichTextEditorI18n i18n) {
         Objects.requireNonNull(i18n,
                 "The I18N properties object should not be null");
         this.i18n = i18n;
@@ -197,7 +197,7 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
     /**
      * The internationalization properties for {@link RichTextEditor}.
      */
-    public static class RTEI18n implements Serializable {
+    public static class RichTextEditorI18n implements Serializable {
         private String undo;
         private String redo;
         private String bold;
@@ -219,184 +219,454 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
         private String codeBlock;
         private String clean;
 
+        /**
+         * Gets the translated word for {@code undo}
+         *
+         * @return the translated word for undo
+         */
         public String getUndo() {
             return undo;
         }
 
-        public RTEI18n setUndo(String undo) {
+        /**
+         * Sets the translated word for {@code undo}.
+         *
+         * @param undo
+         *            the translated word for undo
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setUndo(String undo) {
             this.undo = undo;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code redo}
+         *
+         * @return the translated word for redo
+         */
         public String getRedo() {
             return redo;
         }
 
-        public RTEI18n setRedo(String redo) {
+        /**
+         * Sets the translated word for {@code redo}.
+         *
+         * @param redo
+         *            the translated word for redo
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setRedo(String redo) {
             this.redo = redo;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code bold}
+         *
+         * @return the translated word for bold
+         */
         public String getBold() {
             return bold;
         }
 
-        public RTEI18n setBold(String bold) {
+        /**
+         * Sets the translated word for {@code bold}.
+         *
+         * @param bold
+         *            the translated word for bold
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setBold(String bold) {
             this.bold = bold;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code italic}
+         *
+         * @return the translated word for italic
+         */
         public String getItalic() {
             return italic;
         }
 
-        public RTEI18n setItalic(String italic) {
+        /**
+         * Sets the translated word for {@code italic}.
+         *
+         * @param italic
+         *            the translated word for italic
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setItalic(String italic) {
             this.italic = italic;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code underline}
+         *
+         * @return the translated word for
+         */
         public String getUnderline() {
             return underline;
         }
 
-        public RTEI18n setUnderline(String underline) {
+        /**
+         * Sets the translated word for {@code underline}.
+         *
+         * @param underline
+         *            the translated word for underline
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setUnderline(String underline) {
             this.underline = underline;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code strike}
+         *
+         * @return the translated word for strike
+         */
         public String getStrike() {
             return strike;
         }
 
-        public RTEI18n setStrike(String strike) {
+        /**
+         * Sets the translated word for {@code strike}.
+         *
+         * @param strike
+         *            the translated word for strike
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setStrike(String strike) {
             this.strike = strike;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code h1}
+         *
+         * @return the translated word for h1
+         */
         public String getH1() {
             return h1;
         }
 
-        public RTEI18n setH1(String h1) {
+        /**
+         * Sets the translated word for {@code h1}.
+         *
+         * @param h1
+         *            the translated word for h1
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setH1(String h1) {
             this.h1 = h1;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code h2}
+         *
+         * @return the translated word for h2
+         */
         public String getH2() {
             return h2;
         }
 
-        public RTEI18n setH2(String h2) {
+        /**
+         * Sets the translated word for {@code h2}.
+         *
+         * @param h2
+         *            the translated word for h2
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setH2(String h2) {
             this.h2 = h2;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code h3}
+         *
+         * @return the translated word for h3
+         */
         public String getH3() {
             return h3;
         }
 
-        public RTEI18n setH3(String h3) {
+        /**
+         * Sets the translated word for {@code h3}.
+         *
+         * @param h3
+         *            the translated word for h3
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setH3(String h3) {
             this.h3 = h3;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code subscript}
+         *
+         * @return the translated word for subscript
+         */
         public String getSubscript() {
             return subscript;
         }
 
-        public RTEI18n setSubscript(String subscript) {
+        /**
+         * Sets the translated word for {@code subscript}.
+         *
+         * @param subscript
+         *            the translated word for subscript
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setSubscript(String subscript) {
             this.subscript = subscript;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code superscript}
+         *
+         * @return the translated word for superscript
+         */
         public String getSuperscript() {
             return superscript;
         }
 
-        public RTEI18n setSuperscript(String superscript) {
+        /**
+         * Sets the translated word for {@code superscript}.
+         *
+         * @param superscript
+         *            the translated word for superscript
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setSuperscript(String superscript) {
             this.superscript = superscript;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code listOrdered}
+         *
+         * @return the translated word for listOrdered
+         */
         public String getListOrdered() {
             return listOrdered;
         }
 
-        public RTEI18n setListOrdered(String listOrdered) {
+        /**
+         * Sets the translated word for {@code listOrdered}.
+         *
+         * @param listOrdered
+         *            the translated word for listOrdered
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setListOrdered(String listOrdered) {
             this.listOrdered = listOrdered;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code listBullet}
+         *
+         * @return the translated word for listBullet
+         */
         public String getListBullet() {
             return listBullet;
         }
 
-        public RTEI18n setListBullet(String listBullet) {
+        /**
+         * Sets the translated word for {@code listBullet}.
+         *
+         * @param listBullet
+         *            the translated word for listBullet
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setListBullet(String listBullet) {
             this.listBullet = listBullet;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code alignLeft}
+         *
+         * @return the translated word for alignLeft
+         */
         public String getAlignLeft() {
             return alignLeft;
         }
 
-        public RTEI18n setAlignLeft(String alignLeft) {
+        /**
+         * Sets the translated word for {@code alignLeft}.
+         *
+         * @param alignLeft
+         *            the translated word for alignLeft
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setAlignLeft(String alignLeft) {
             this.alignLeft = alignLeft;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code alignCenter}
+         *
+         * @return the translated word for alignCenter
+         */
         public String getAlignCenter() {
             return alignCenter;
         }
 
-        public RTEI18n setAlignCenter(String alignCenter) {
+        /**
+         * Sets the translated word for {@code alignCenter}.
+         *
+         * @param alignCenter
+         *            the translated word for alignCenter
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setAlignCenter(String alignCenter) {
             this.alignCenter = alignCenter;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code alignRight}
+         *
+         * @return the translated word for alignRight
+         */
         public String getAlignRight() {
             return alignRight;
         }
 
-        public RTEI18n setAlignRight(String alignRight) {
+        /**
+         * Sets the translated word for {@code alignRight}.
+         *
+         * @param alignRight
+         *            the translated word for alignRight
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setAlignRight(String alignRight) {
             this.alignRight = alignRight;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code image}
+         *
+         * @return the translated word for image
+         */
         public String getImage() {
             return image;
         }
 
-        public RTEI18n setImage(String image) {
+        /**
+         * Sets the translated word for {@code image}.
+         *
+         * @param image
+         *            the translated word for image
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setImage(String image) {
             this.image = image;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code blockquote}
+         *
+         * @return the translated word for blockquote
+         */
         public String getBlockquote() {
             return blockquote;
         }
 
-        public RTEI18n setBlockquote(String blockquote) {
+        /**
+         * Sets the translated word for {@code blockquote}.
+         *
+         * @param blockquote
+         *            the translated word for blockquote
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setBlockquote(String blockquote) {
             this.blockquote = blockquote;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code codeBlock}
+         *
+         * @return the translated word for codeBlock
+         */
         public String getCodeBlock() {
             return codeBlock;
         }
 
-        public RTEI18n setCodeBlock(String codeBlock) {
+        /**
+         * Sets the translated word for {@code codeBlock}.
+         *
+         * @param codeBlock
+         *            the translated word for codeBlock
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setCodeBlock(String codeBlock) {
             this.codeBlock = codeBlock;
             return this;
         }
 
+        /**
+         * Gets the translated word for {@code clean}
+         *
+         * @return the translated word for clean
+         */
         public String getClean() {
             return clean;
         }
 
-        public RTEI18n setClean(String clean) {
+        /**
+         * Sets the translated word for {@code clean}.
+         *
+         * @param clean
+         *            the translated word for clean
+         * @return this instance for method chaining
+         */
+        public RichTextEditorI18n setClean(String clean) {
             this.clean = clean;
             return this;
+        }
+
+        /**
+         * Gets the stringified values of the tooltips.
+         *
+         * @return stringified values of the tooltips
+         */
+        @Override
+        public String toString() {
+            return  "[" +
+                    undo + ", " +
+                    redo + ", " +
+                    bold + ", " +
+                    italic + ", " +
+                    underline + ", " +
+                    strike + ", " +
+                    h1 + ", " +
+                    h2 + ", " +
+                    h3 + ", " +
+                    subscript + ", " +
+                    superscript + ", " +
+                    listOrdered + ", " +
+                    listBullet + ", " +
+                    alignLeft + ", " +
+                    alignCenter + ", " +
+                    alignRight + ", " +
+                    image + ", " +
+                    blockquote + ", " +
+                    codeBlock + ", " +
+                    clean + "]";
         }
     }
 }
