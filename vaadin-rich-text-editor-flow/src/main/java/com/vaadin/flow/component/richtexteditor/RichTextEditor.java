@@ -196,7 +196,7 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
         return sanitize(getHtmlValueString());
     }
 
-    protected String sanitize(String html) {
+    String sanitize(String html) {
         return org.jsoup.Jsoup.clean(html,
                         org.jsoup.safety.Whitelist.basic()
                         .addTags("img")
