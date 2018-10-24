@@ -36,29 +36,29 @@ public class RichTextEditorTest {
     }
 
     @Test
-    public void setMaliciousScript() {
+    public void sanitizeScriptTag_scriptTagRemoved() {
         // Check if basic whitelist is applied
         RichTextEditor rte = new RichTextEditor();
-        Assert.assertEquals(rte.sanitize("<script>alert('Foo')</script>"),
-                "");
+        Assert.assertEquals(rte.sanitize(""),
+                "<script>alert('Foo')</script>");
     }
 
     @Test
-    public void setMaliciousImgHTTP() {
+    public void sanitizeImgTagWithHttpSource_srcAttributeRemoved() {
         RichTextEditor rte = new RichTextEditor();
-        Assert.assertEquals(rte.sanitize("<img src='http://vaadin.com'>"),
-                "<img>");
+        Assert.assertEquals(rte.sanitize("<img>"),
+                "<img src='http://vaadin.com'>");
     }
 
     @Test
-    public void setMaliciousImgHTTPS() {
+    public void sanitizeImgTagWithHttpsSource_srcAttributeRemoved() {
         RichTextEditor rte = new RichTextEditor();
-        Assert.assertEquals(rte.sanitize("<img src='https://vaadin.com'>"),
-                "<img>");
+        Assert.assertEquals(rte.sanitize("<img>"),
+                "<img src='https://vaadin.com'>");
     }
 
     @Test
-    public void setValidImgData() {
+    public void sanitizeImgTagWithDataSource_srcAttributePersist() {
         RichTextEditor rte = new RichTextEditor();
         Assert.assertEquals(rte.sanitize("<img src=\"data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==\">"),
                 "<img src=\"data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==\">");
