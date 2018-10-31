@@ -341,37 +341,6 @@ public abstract class GeneratedVaadinRichTextEditor<R extends GeneratedVaadinRic
                 (ComponentEventListener) listener);
     }
 
-    public static class HtmlValueChangeEvent<R extends GeneratedVaadinRichTextEditor<R, ?>>
-            extends ComponentEvent<R> {
-        private final String htmlValue;
-
-        public HtmlValueChangeEvent(R source, boolean fromClient) {
-            super(source, fromClient);
-            this.htmlValue = source.getHtmlValueString();
-        }
-
-        public String getHtmlValue() {
-            return htmlValue;
-        }
-    }
-
-    /**
-     * Adds a listener for {@code html-value-changed} events fired by the
-     * webcomponent.
-     *
-     * @param listener
-     *            the listener
-     * @return a {@link Registration} for removing the event listener
-     */
-    protected Registration addHtmlValueChangeListener(
-            ComponentEventListener<HtmlValueChangeEvent<R>> listener) {
-        return getElement()
-                .addPropertyChangeListener("htmlValue",
-                        event -> listener.onComponentEvent(
-                                new HtmlValueChangeEvent<R>((R) this,
-                                        event.isUserOriginated())));
-    }
-
     /**
      * Constructs a new GeneratedVaadinRichTextEditor component with the given
      * arguments.
