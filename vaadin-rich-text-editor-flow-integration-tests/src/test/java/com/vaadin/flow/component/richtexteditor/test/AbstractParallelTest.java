@@ -93,4 +93,8 @@ public abstract class AbstractParallelTest extends ParallelTest {
     protected String getLastRteBinderValue() {
         return $("div").id("binder-value-panel").getText();
     }
+
+    protected String getLastRteTemplateValue() {
+        return $("div").id("template-value-panel").getText();
+    }
 }
