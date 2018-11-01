@@ -100,6 +100,19 @@ public class BasicUseIT extends AbstractParallelTest {
         Assert.assertEquals("", getLastRteBinderValue());
     }
 
+    @Test
+    public void richTextEditorInATemplate_settingAndGettingValueCorrectly() {
+        RichTextEditorElement templateRte = $("rte-in-a-template").id("template")
+                .$(RichTextEditorElement.class).first();
+        templateRte.getEditor().setProperty("innerHTML", "<p>Bar</p>");
+        ButtonElement getValue = getTestButton("get-template-rte-value");
+
+        waitUntil(driver -> {
+            getValue.click();
+            return getLastRteTemplateValue().equals("[{\"insert\":\"Bar\\n\"}]");
+        });
+    }
+
     private ButtonElement getTestButton(String id) {
         return $(ButtonElement.class).onPage().id(id);
     }

@@ -71,10 +71,11 @@ public class MainView extends VerticalLayout {
             }
         });
 
-        setHeight("100%");
         add(rte, setValueButton, getValueButton, getHtmlValueButton, setI18n, getI18n, valuePanel, htmlValuePanel, i18nPanel);
 
         createRichTextEditorWithBinder();
+
+        createRichTextEditorInATemplate();
     }
 
     private RichTextEditor.RichTextEditorI18n createCustomI18n () {
@@ -87,6 +88,24 @@ public class MainView extends VerticalLayout {
                 .setAlignRight("16").setImage("17").setBlockquote("18")
                 .setCodeBlock("19").setClean("20");
         return i18n;
+    }
+
+    private void createRichTextEditorInATemplate() {
+        RichTextEditorInATemplate richTextEditorInATemplate = new RichTextEditorInATemplate();
+        richTextEditorInATemplate.setId("template");
+        RichTextEditor rteTemplate = richTextEditorInATemplate.getRichTextEditor();
+
+        Div valuePanel = new Div();
+        valuePanel.setId("template-value-panel");
+
+        Button getValueButton = new Button("Get value");
+        getValueButton.setId("get-template-rte-value");
+        getValueButton.addClickListener(event -> {
+            String value = rteTemplate.getValue();
+            valuePanel.setText(value);
+        });
+
+        add(richTextEditorInATemplate, valuePanel, getValueButton);
     }
 
     private void createRichTextEditorWithBinder() {
