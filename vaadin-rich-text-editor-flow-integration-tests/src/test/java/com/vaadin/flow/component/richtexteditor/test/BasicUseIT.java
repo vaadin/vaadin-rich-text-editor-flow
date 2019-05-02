@@ -29,7 +29,8 @@ public class BasicUseIT extends AbstractParallelTest {
     public void setValueCorrectly() {
         TestBenchElement editor = $(RichTextEditorElement.class).waitForFirst()
                 .getEditor();
-        editor.setProperty("innerHTML", "<p>Bar</p>");
+        editor.setProperty("innerHTML", "");
+        editor.sendKeys("Bar");
         ButtonElement getValue = getTestButton("getValue");
         ButtonElement getHtmlValue = getTestButton("getHtmlValue");
 
@@ -111,7 +112,7 @@ public class BasicUseIT extends AbstractParallelTest {
     public void richTextEditorInATemplate_settingAndGettingValueCorrectly() {
         RichTextEditorElement templateRte = $("rte-in-a-template")
                 .id("template").$(RichTextEditorElement.class).first();
-        templateRte.getEditor().setProperty("innerHTML", "<p>Bar</p>");
+        templateRte.getEditor().sendKeys("Bar");
         ButtonElement getValue = getTestButton("get-template-rte-value");
 
         waitUntil(driver -> {
