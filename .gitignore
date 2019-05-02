@@ -11,3 +11,6 @@ vaadin-rich-text-editor-flow-integration-tests/error-screenshots/
 .settings
 **/.DS_Store
 .vscode
+
+# The following files are generated/updated by flow-maven-plugin
+node_modules/
