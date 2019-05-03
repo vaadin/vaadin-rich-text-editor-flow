@@ -53,14 +53,7 @@ module.exports = {
       { // Files that Babel has to transpile
         test: /\.js$/,
         use: [BabelMultiTargetPlugin.loader()]
-      },
-      {
-          test: require.resolve('@vaadin/vaadin-rich-text-editor/vendor/vaadin-quill.js'),
-          use: [{
-            loader: 'expose-loader',
-            options: 'Quill'
-          }]
-        }
+      }
     ]
   },
 
