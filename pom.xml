@@ -38,8 +38,6 @@
 	<modules>
 		<module>vaadin-rich-text-editor-flow</module>
 		<module>vaadin-rich-text-editor-flow-testbench</module>
-		<module>vaadin-rich-text-editor-flow-integration-tests</module>
-        <module>vaadin-rich-text-editor-flow-integration-tests/pom-bower-mode.xml</module>
 		<module>vaadin-rich-text-editor-flow-demo</module>
 	</modules>
 	<repositories>
@@ -74,4 +72,26 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>npm-it</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>vaadin-rich-text-editor-flow-integration-tests</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>bower-it</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>vaadin-rich-text-editor-flow-integration-tests/pom-bower-mode.xml</module>
+            </modules>
+        </profile>
+    </profiles>
+
 </project>
