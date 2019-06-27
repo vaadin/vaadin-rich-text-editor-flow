@@ -66,9 +66,9 @@ public class BasicUseIT extends AbstractParallelTest {
     }
 
     @Test
-    public void setHtmlValueCorrect() {
-        ButtonElement setHtmlValue = getTestButton("setHtmlValue");
-        setHtmlValue.click();
+    public void setHtmlValueAsynchronouslyCorrect() {
+        ButtonElement setHtmlValueAsynchronously = getTestButton("setHtmlValueAsynchronously");
+        setHtmlValueAsynchronously.click();
 
         ButtonElement getValue = getTestButton("getValue");
         ButtonElement getHtmlValue = getTestButton("getHtmlValue");
