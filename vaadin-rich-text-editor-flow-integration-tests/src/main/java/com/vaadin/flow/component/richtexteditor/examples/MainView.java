@@ -40,6 +40,10 @@ public class MainView extends VerticalLayout {
         setValueButton.setId("setValue");
         setValueButton.addClickListener(event -> rte.setValue("[{\"insert\":\"Foo\"}]"));
 
+        Button setHtmlValueButton = new Button("Set htmlValue");
+        setHtmlValueButton.setId("setHtmlValue");
+        setHtmlValueButton.addClickListener(event -> rte.setHtmlValue("<h3><i>Foo</i>Bar</h3>"));
+
         Button getValueButton = new Button("Get value");
         getValueButton.setId("getValue");
         getValueButton.addClickListener(event -> {
@@ -71,7 +75,7 @@ public class MainView extends VerticalLayout {
             }
         });
 
-        add(rte, setValueButton, getValueButton, getHtmlValueButton, setI18n, getI18n, valuePanel, htmlValuePanel, i18nPanel);
+        add(rte, setValueButton, setHtmlValueButton, getValueButton, getHtmlValueButton, setI18n, getI18n, valuePanel, htmlValuePanel, i18nPanel);
 
         createRichTextEditorWithBinder();
 
