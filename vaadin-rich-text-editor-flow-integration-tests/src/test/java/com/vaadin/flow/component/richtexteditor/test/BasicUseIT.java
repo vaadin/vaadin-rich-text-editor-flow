@@ -66,6 +66,21 @@ public class BasicUseIT extends AbstractParallelTest {
     }
 
     @Test
+    public void setHtmlValueCorrect() {
+        ButtonElement setHtmlValue = getTestButton("setHtmlValue");
+        setHtmlValue.click();
+
+        ButtonElement getValue = getTestButton("getValue");
+        ButtonElement getHtmlValue = getTestButton("getHtmlValue");
+        getValue.click();
+        getHtmlValue.click();
+
+        Assert.assertEquals("[{\"attributes\":{\"italic\":true},\"insert\":\"Foo\"}," +
+                "{\"insert\":\"Bar\"},{\"attributes\":{\"header\":3},\"insert\":\"\\n\"}]", getLastValue());
+        Assert.assertEquals("<h3><em>Foo</em>Bar</h3>", getLastHtmlValue());
+    }
+
+    @Test
     public void setAndGetI18nCorrect() {
         ButtonElement setI18n = getTestButton("setI18n");
         ButtonElement getI18n = getTestButton("getI18n");

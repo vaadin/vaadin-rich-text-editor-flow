@@ -175,6 +175,26 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
     }
 
     /**
+     * Sets content represented by sanitized HTML string into the editor.
+     * The HTML string is interpreted by
+     * <a href="http://quilljs.com/docs/modules/clipboard/#matchers">Quill's Clipboard matchers</a>
+     * on the client side, which may not produce the exactly input HTML.
+     *
+     * @param htmlValueString
+     *            the HTML string
+     */
+    public void setHtmlValue(String htmlValueString) {
+        getElement().callFunction("dangerouslySetHtmlValue", sanitize(htmlValueString));
+        getElement().executeJavaScript("$0.__debounceSetValue.flush();" +
+                        "$0.$server.updateValue($0.value);", getElement());
+    }
+
+    @ClientCallable
+    private void updateValue(String value) {
+        setValue(value);
+    }
+
+    /**
      * Returns the current value of the text editor in <a href="https://github.com/quilljs/delta">Delta</a> format. By default, the empty
      * editor will return an empty string.
      *
