@@ -179,11 +179,13 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
      * The HTML string is interpreted by
      * <a href="http://quilljs.com/docs/modules/clipboard/#matchers">Quill's Clipboard matchers</a>
      * on the client side, which may not produce the exactly input HTML.
+     * <p>
+     * Note: The value will be set asynchronously with client-server roundtrip.
      *
      * @param htmlValueString
      *            the HTML string
      */
-    public void setHtmlValue(String htmlValueString) {
+    public void setHtmlValueAsynchronously(String htmlValueString) {
         getElement().callFunction("dangerouslySetHtmlValue", sanitize(htmlValueString));
         getElement().executeJavaScript("$0.__debounceSetValue.flush();" +
                         "$0.$server.updateValue($0.value);", getElement());
