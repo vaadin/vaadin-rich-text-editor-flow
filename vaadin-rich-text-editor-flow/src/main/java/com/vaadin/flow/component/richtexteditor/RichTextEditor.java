@@ -8,10 +8,10 @@ package com.vaadin.flow.component.richtexteditor;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file license.html distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <http://vaadin.com/license/cval-3>.
  * #L%
@@ -19,12 +19,15 @@ package com.vaadin.flow.component.richtexteditor;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.internal.AbstractFieldSupport;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.value.HasValueChangeMode;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.internal.JsonSerializer;
+import com.vaadin.flow.shared.Registration;
 import elemental.json.JsonObject;
+import sun.awt.SunHints;
 
 import java.util.Objects;
 
@@ -39,7 +42,7 @@ import java.io.Serializable;
 @Tag("vaadin-rich-text-editor")
 @HtmlImport("frontend://bower_components/vaadin-rich-text-editor/src/vaadin-rich-text-editor.html")
 public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor, String>
-    implements HasSize, HasValueChangeMode, InputNotifier, KeyNotifier, CompositionNotifier {
+        implements HasSize, HasValueChangeMode, InputNotifier, KeyNotifier, CompositionNotifier {
 
     private ValueChangeMode currentMode;
     private RichTextEditorI18n i18n;
@@ -134,7 +137,7 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
      * @see #addValueChangeListener(com.vaadin.flow.component.HasValue.ValueChangeListener)
      */
     public RichTextEditor(String initialValue,
-            ValueChangeListener<? super ComponentValueChangeEvent<RichTextEditor, String>> listener) {
+                          ValueChangeListener<? super ComponentValueChangeEvent<RichTextEditor, String>> listener) {
         this();
         setValue(initialValue);
         addValueChangeListener(listener);
@@ -186,9 +189,7 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
      *            the HTML string
      */
     public void setHtmlValueAsynchronously(String htmlValueString) {
-        getElement().callFunction("dangerouslySetHtmlValue", sanitize(htmlValueString));
-        getElement().executeJavaScript("$0.__debounceSetValue.flush();" +
-                        "$0.$server.updateValue($0.value);", getElement());
+        getElement().callJsFunction("dangerouslySetHtmlValue", sanitize(htmlValueString));
     }
 
     @ClientCallable
@@ -220,7 +221,7 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
 
     String sanitize(String html) {
         return org.jsoup.Jsoup.clean(html,
-                        org.jsoup.safety.Whitelist.basic()
+                org.jsoup.safety.Whitelist.basic()
                         .addTags("img", "h1", "h2", "h3", "s")
                         .addAttributes("img", "align", "alt", "height", "src", "title", "width")
                         .addAttributes(":all", "style")
@@ -723,6 +724,95 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
                     blockquote + ", " +
                     codeBlock + ", " +
                     clean + "]";
+        }
+    }
+
+    /**
+     * Gets an instance of {@code HasValue} interface for binding the
+     * html value of the field with {@code Binder}.
+     *
+     * @return an instance of {@code HasValue} interface
+     */
+    public HasValue<ValueChangeEvent<String>, String> asHtml() {
+        return new AsHtml(this);
+    }
+
+    /**
+     * Use this rich text editor as an editor with html value in {@link Binder}.
+     *
+     * @author Vaadin Ltd
+     *
+     */
+    public class AsHtml implements HasValue<ValueChangeEvent<String>, String> {
+
+        private String oldValue;
+        private String value;
+        private RichTextEditor rte;
+
+        AsHtml(RichTextEditor rte) {
+            this.rte = rte;
+            addValueChangeListener(event -> setValue(getHtmlValue()));
+        }
+
+        @Override
+        public void setValue(String value) {
+            this.oldValue = getValue();
+            this.value = value;
+            setHtmlValueAsynchronously(value);
+        }
+
+        @Override
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public Registration addValueChangeListener(ValueChangeListener listener) {
+            return
+                    rte.addValueChangeListener(originalEvent -> {
+                        ValueChangeEvent event = new ValueChangeEvent<String>() {
+                            @Override
+                            public HasValue<?, String> getHasValue() {
+                                return originalEvent.getHasValue();
+                            }
+
+                            @Override
+                            public boolean isFromClient() {
+                                return originalEvent.isFromClient();
+                            }
+
+                            @Override
+                            public String getOldValue() {
+                                return oldValue;
+                            }
+
+                            @Override
+                            public String getValue() {
+                                return getHtmlValue();
+                            }
+                        };
+                        listener.valueChanged(event);
+                    });
+        }
+
+        @Override
+        public void setReadOnly(boolean readOnly) {
+            rte.setReadOnly(readOnly);
+        }
+
+        @Override
+        public boolean isReadOnly() {
+            return rte.isReadOnly();
+        }
+
+        @Override
+        public void setRequiredIndicatorVisible(boolean requiredIndicatorVisible) {
+            rte.setRequiredIndicatorVisible(requiredIndicatorVisible);
+        }
+
+        @Override
+        public boolean isRequiredIndicatorVisible() {
+            return rte.isRequiredIndicatorVisible();
         }
     }
 }

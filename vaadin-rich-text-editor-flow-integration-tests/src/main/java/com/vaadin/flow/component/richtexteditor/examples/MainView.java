@@ -1,5 +1,7 @@
 package com.vaadin.flow.component.richtexteditor.examples;
 
+import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.HasValue.ValueChangeEvent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.richtexteditor.RichTextEditor;
 import com.vaadin.flow.component.button.Button;
@@ -9,6 +11,7 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.Binder.Binding;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.data.binder.BindingValidationStatus;
+import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.router.Route;
@@ -80,6 +83,8 @@ public class MainView extends VerticalLayout {
         createRichTextEditorWithBinder();
 
         createRichTextEditorInATemplate();
+
+        createRichTextEditorWithHtmlBinder();
     }
 
     private RichTextEditor.RichTextEditorI18n createCustomI18n () {
@@ -180,6 +185,51 @@ public class MainView extends VerticalLayout {
         add(rteWithBinder, actions, infoPanel, valuePanel);
     }
 
+    private class Product implements Serializable {
+        private int id;
+        private String description;
+
+        public Product(String description) {
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+    }
+
+    private void createRichTextEditorWithHtmlBinder() {
+        RichTextEditor rte = new RichTextEditor();
+        HasValue<ValueChangeEvent<String>, String> asHtml = rte.asHtml();
+        asHtml.setValue("<p>foo</p><b>bar</b>");
+
+        Binder<Product> binder = new Binder<>(Product.class);
+        binder.forField(rte.asHtml())
+                .bind(Product::getDescription, Product::setDescription);
+
+        Product product = new Product("<p><b>Some description</b></p>");
+        binder.readBean(product);
+
+        Button saveButton = new Button("Save",
+                event -> {
+                    try {
+                        binder.writeBean(product);
+                    } catch (ValidationException e) {
+                        System.out.println(e);
+                    }
+                });
+
+        Button resetButton = new Button("Reset",
+                event -> binder.readBean(product));
+
+        asHtml.addValueChangeListener(event -> valuePanel.setText(product.toString()));
+
+        add(rte, saveButton, resetButton);
+    }
 
     /**
      * Example Bean for the Form with Binder.
