@@ -11,7 +11,6 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.Binder.Binding;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.data.binder.BindingValidationStatus;
-import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.router.Route;
@@ -42,10 +41,6 @@ public class MainView extends VerticalLayout {
         Button setValueButton = new Button("Set value");
         setValueButton.setId("setValue");
         setValueButton.addClickListener(event -> rte.setValue("[{\"insert\":\"Foo\"}]"));
-
-        Button setHtmlValueAsynchronouslyButton = new Button("Set htmlValue asynchronously");
-        setHtmlValueAsynchronouslyButton.setId("setHtmlValueAsynchronously");
-        setHtmlValueAsynchronouslyButton.addClickListener(event -> rte.setHtmlValueAsynchronously("<h3><i>Foo</i>Bar</h3>"));
 
         Button getValueButton = new Button("Get value");
         getValueButton.setId("getValue");
@@ -78,7 +73,7 @@ public class MainView extends VerticalLayout {
             }
         });
 
-        add(rte, setValueButton, setHtmlValueAsynchronouslyButton, getValueButton, getHtmlValueButton, setI18n, getI18n, valuePanel, htmlValuePanel, i18nPanel);
+        add(rte, setValueButton, getValueButton, getHtmlValueButton, setI18n, getI18n, valuePanel, htmlValuePanel, i18nPanel);
 
         createRichTextEditorWithBinder();
 
@@ -185,50 +180,73 @@ public class MainView extends VerticalLayout {
         add(rteWithBinder, actions, infoPanel, valuePanel);
     }
 
-    private class Product implements Serializable {
-        private int id;
-        private String description;
-
-        public Product(String description) {
-            this.description = description;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-    }
-
     private void createRichTextEditorWithHtmlBinder() {
         RichTextEditor rte = new RichTextEditor();
+        rte.setId("html-rte");
+        add(rte);
+
         HasValue<ValueChangeEvent<String>, String> asHtml = rte.asHtml();
-        asHtml.setValue("<p>foo</p><b>bar</b>");
 
-        Binder<Product> binder = new Binder<>(Product.class);
-        binder.forField(rte.asHtml())
-                .bind(Product::getDescription, Product::setDescription);
+        Div valuePanel = new Div();
+        valuePanel.setId("html-binder-value-panel");
 
-        Product product = new Product("<p><b>Some description</b></p>");
-        binder.readBean(product);
+        Div infoPanel = new Div();
+        Binder<HtmlEntry> binder = new Binder<>();
 
-        Button saveButton = new Button("Save",
-                event -> {
-                    try {
-                        binder.writeBean(product);
-                    } catch (ValidationException e) {
-                        System.out.println(e);
-                    }
-                });
+        // The object that will be edited
+        HtmlEntry entryBeingEdited = new HtmlEntry();
 
-        Button resetButton = new Button("Reset",
-                event -> binder.readBean(product));
+        // Create the action buttons
+        Button save = new Button("Save");
+        Button reset = new Button("Reset");
+        Button getValueButton = new Button("Get value");
+        getValueButton.setId("get-html-binder-rte-value");
+        getValueButton.addClickListener(event -> {
+            String value = asHtml.getValue();
+            valuePanel.setText(value);
+        });
 
-        asHtml.addValueChangeListener(event -> valuePanel.setText(product.toString()));
+        // Button bar
+        HorizontalLayout actions = new HorizontalLayout();
+        actions.add(save, reset, getValueButton);
+        save.getStyle().set("marginRight", "10px");
 
-        add(rte, saveButton, resetButton);
+        SerializablePredicate<String> htmlValuePredicate = value -> !asHtml
+                .getValue().trim().isEmpty();
+
+        Binding<HtmlEntry, String> asHtmlValueBinding = binder.forField(asHtml)
+                .withValidator(htmlValuePredicate,
+                        "html value should contain something")
+                .bind(HtmlEntry::getHtmlValue, HtmlEntry::setHtmlValue);
+
+        // First name and last name are required fields
+        asHtml.setRequiredIndicatorVisible(true);
+
+        // Click listeners for the buttons
+        save.addClickListener(event -> {
+            if (binder.writeBeanIfValid(entryBeingEdited)) {
+                infoPanel.setText("Saved bean values: " + entryBeingEdited);
+            } else {
+                BinderValidationStatus<HtmlEntry> validate = binder.validate();
+                String errorText = validate.getFieldValidationStatuses()
+                        .stream().filter(BindingValidationStatus::isError)
+                        .map(BindingValidationStatus::getMessage)
+                        .map(Optional::get).distinct()
+                        .collect(Collectors.joining(", "));
+                infoPanel.setText("There are errors: " + errorText);
+            }
+        });
+        reset.addClickListener(event -> {
+            // clear fields by setting null
+            binder.readBean(null);
+            infoPanel.setText("");
+        });
+
+        infoPanel.setId("html-binder-info");
+        save.setId("html-binder-save");
+        reset.setId("html-binder-reset");
+
+        add(actions, infoPanel, valuePanel);
     }
 
     /**
@@ -250,6 +268,29 @@ public class MainView extends VerticalLayout {
         public String toString() {
             return "Contact{" +
                     "deltaValue='" + deltaValue + '\'' +
+                    '}';
+        }
+    }
+
+    /**
+     * Example Bean for the Form with Html Binder.
+     */
+    private static class HtmlEntry implements Serializable {
+
+        private String htmlValue = "";
+
+        public String getHtmlValue() {
+            return htmlValue;
+        }
+
+        public void setHtmlValue(String htmlValue) {
+            this.htmlValue = htmlValue;
+        }
+
+        @Override
+        public String toString() {
+            return "Contact{" +
+                    "htmlValue='" + htmlValue + '\'' +
                     '}';
         }
     }
