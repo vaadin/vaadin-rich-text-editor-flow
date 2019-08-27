@@ -8,10 +8,10 @@ package com.vaadin.flow.component.richtexteditor;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- *
+ * 
  * See the file license.html distributed with this software for more
  * information about licensing.
- *
+ * 
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <http://vaadin.com/license/cval-3>.
  * #L%
@@ -19,7 +19,7 @@ package com.vaadin.flow.component.richtexteditor;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.dependency.HtmlImport;
-import com.vaadin.flow.component.internal.AbstractFieldSupport;
+import com.vaadin.flow.component.page.PendingJavaScriptResult;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.value.HasValueChangeMode;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -27,8 +27,8 @@ import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.internal.JsonSerializer;
 import com.vaadin.flow.shared.Registration;
 import elemental.json.JsonObject;
-import sun.awt.SunHints;
 
+import javax.xml.bind.ValidationEvent;
 import java.util.Objects;
 
 import java.io.Serializable;
@@ -188,8 +188,11 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
      * @param htmlValueString
      *            the HTML string
      */
-    public void setHtmlValueAsynchronously(String htmlValueString) {
-        getElement().callJsFunction("dangerouslySetHtmlValue", sanitize(htmlValueString));
+    private PendingJavaScriptResult setHtmlValueAsynchronously(String htmlValueString) {
+        if (htmlValueString != null) {
+            htmlValueString = sanitize(htmlValueString);
+        }
+        return getElement().callJsFunction("dangerouslySetHtmlValue", htmlValueString);
     }
 
     @ClientCallable
@@ -728,10 +731,10 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
     }
 
     /**
-     * Gets an instance of {@code HasValue} interface for binding the
-     * html value of the field with {@code Binder}.
+     * Gets an instance of {@code HasValue} for binding the
+     * html value of the editor with {@code Binder}.
      *
-     * @return an instance of {@code HasValue} interface
+     * @return an instance of {@code HasValue}
      */
     public HasValue<ValueChangeEvent<String>, String> asHtml() {
         return new AsHtml(this);
@@ -739,11 +742,8 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
 
     /**
      * Use this rich text editor as an editor with html value in {@link Binder}.
-     *
-     * @author Vaadin Ltd
-     *
      */
-    public class AsHtml implements HasValue<ValueChangeEvent<String>, String> {
+    private class AsHtml implements HasValue<ValueChangeEvent<String>, String> {
 
         private String oldValue;
         private String value;
@@ -751,29 +751,73 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
 
         AsHtml(RichTextEditor rte) {
             this.rte = rte;
-            addValueChangeListener(event -> setValue(getHtmlValue()));
+            rte.addValueChangeListener(event -> {
+                if (event.isFromClient()) {
+                   setValue(getHtmlValue(), false);
+                }
+            });
         }
 
+        /**
+         * Sets the value of the editor presented as HTML string.
+         * Also updates the old value which is provided in
+         * {@code ValueChangeEvent}.
+         *
+         * @param value
+         *            the HTML string
+         */
         @Override
         public void setValue(String value) {
             this.oldValue = getValue();
             this.value = value;
-            setHtmlValueAsynchronously(value);
+            setHtmlValueAsynchronously(value).then(result -> {
+                if (!oldValue.equals(value)) {
+                    fireEvent(createValueChange(oldValue, false));
+                }
+            });
         }
 
+        private void setValue(String value, boolean fireEvent) {
+            if (fireEvent) {
+                setValue(value);
+            } else {
+                this.oldValue = getValue();
+                this.value = value;
+            }
+        }
+
+        private ComponentValueChangeEvent<RichTextEditor, String> createValueChange(String oldValue,
+                                                                  boolean fromClient) {
+            return new ComponentValueChangeEvent<>(rte, this, oldValue,
+                    fromClient);
+        }
+
+        /**
+         * Gets the value of the editor presented as HTML string.
+         *
+         * @return the sanitized HTML string
+         */
         @Override
         public String getValue() {
             return value;
         }
 
+        /**
+         * Adds a value change listener. The listener is called when the value of
+         * this {@code HasValue} is changed either by the user or programmatically.
+         *
+         * @param listener
+         *            the value change listener, not null
+         * @return a registration for the listener
+         */
         @Override
         public Registration addValueChangeListener(ValueChangeListener listener) {
             return
                     rte.addValueChangeListener(originalEvent -> {
                         ValueChangeEvent event = new ValueChangeEvent<String>() {
                             @Override
-                            public HasValue<?, String> getHasValue() {
-                                return originalEvent.getHasValue();
+                            public HasValue<ValueChangeEvent<String>, String> getHasValue() {
+                                return AsHtml.this;
                             }
 
                             @Override
@@ -788,28 +832,54 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
 
                             @Override
                             public String getValue() {
-                                return getHtmlValue();
+                                return AsHtml.this.getValue();
                             }
                         };
                         listener.valueChanged(event);
                     });
         }
 
+        /**
+         * Sets the editor to be read only.
+         *
+         * @param readOnly
+         *            {@code true} to make the editor read only,
+         *            {@code false} to make the editor not read only
+         */
         @Override
         public void setReadOnly(boolean readOnly) {
             rte.setReadOnly(readOnly);
         }
 
+        /**
+         * Gets whether the editor is read only.
+         *
+         * @return {@code true} if the editor is read only,
+         *         {@code false} if it is not read only
+         */
         @Override
         public boolean isReadOnly() {
             return rte.isReadOnly();
         }
 
+        /**
+         * Sets the editor's required indicator visibility.
+         *
+         * @param requiredIndicatorVisible
+         *            {@code true} to make the indicator visible,
+         *            {@code false} to hide the indicator
+         */
         @Override
         public void setRequiredIndicatorVisible(boolean requiredIndicatorVisible) {
             rte.setRequiredIndicatorVisible(requiredIndicatorVisible);
         }
 
+        /**
+         * Gets whether editor's required indicator is visible.
+         *
+         * @return {@code true} if the required indicator is visible,
+         *         {@code false} if it is hidden.
+         */
         @Override
         public boolean isRequiredIndicatorVisible() {
             return rte.isRequiredIndicatorVisible();
