@@ -199,16 +199,18 @@ public class MainView extends VerticalLayout {
         // Create the action buttons
         Button save = new Button("Save");
         Button reset = new Button("Reset");
+        Button setBeanHtmlValue = new Button("Set bean html value");
         Button getValueButton = new Button("Get value");
         getValueButton.setId("get-html-binder-rte-value");
         getValueButton.addClickListener(event -> {
             String value = asHtml.getValue();
-            valuePanel.setText(value);
+            String webcomponentValue = rte.getElement().getProperty("htmlValue");
+            valuePanel.setText(value + ' ' + webcomponentValue);
         });
 
         // Button bar
         HorizontalLayout actions = new HorizontalLayout();
-        actions.add(save, reset, getValueButton);
+        actions.add(save, reset, getValueButton, setBeanHtmlValue);
         save.getStyle().set("marginRight", "10px");
 
         SerializablePredicate<String> htmlValuePredicate = value -> !asHtml
@@ -241,9 +243,14 @@ public class MainView extends VerticalLayout {
             binder.readBean(null);
             infoPanel.setText("");
         });
+        setBeanHtmlValue.addClickListener(event -> {
+            entryBeingEdited.setHtmlValue("<p><b>Foo</b></p>");
+            binder.readBean(entryBeingEdited);
+        });
 
         infoPanel.setId("html-binder-info");
         save.setId("html-binder-save");
+        setBeanHtmlValue.setId("html-binder-set-bean-value");
         reset.setId("html-binder-reset");
 
         add(actions, infoPanel, valuePanel);
