@@ -771,7 +771,7 @@ public class RichTextEditor extends GeneratedVaadinRichTextEditor<RichTextEditor
             this.oldValue = getValue();
             this.value = value;
             setHtmlValueAsynchronously(value).then(result -> {
-                if (!oldValue.equals(value)) {
+                if (oldValue != null && !oldValue.equals(value)) {
                     fireEvent(createValueChange(oldValue, false));
                 }
             });
