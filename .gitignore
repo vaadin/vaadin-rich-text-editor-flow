@@ -13,6 +13,6 @@ vaadin-rich-text-editor-flow-integration-tests/error-screenshots/
 .vscode
 
 # The following files are generated/updated by flow-maven-plugin
-node_modules
-package*json
-webpack.config.js
+package*.json
+webpack.*.js
+node_modules/
