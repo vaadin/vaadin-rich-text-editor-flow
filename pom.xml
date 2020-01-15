@@ -74,7 +74,7 @@
 
     <profiles>
         <profile>
-            <id>default</id>
+            <id>npm-it</id>
             <activation>
                 <property>
                     <name>!release</name>
