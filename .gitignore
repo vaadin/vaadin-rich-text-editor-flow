@@ -15,3 +15,5 @@ vaadin-rich-text-editor-flow-integration-tests/error-screenshots/
 package*.json
 webpack.*.js
 node_modules/
+pnpm-lock.yaml
+tsconfig.json
