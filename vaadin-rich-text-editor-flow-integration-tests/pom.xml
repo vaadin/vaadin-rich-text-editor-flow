@@ -126,12 +126,6 @@
                                 <include>webpack.config.js</include>
                             </includes>
                         </fileset>
-                        <fileset>
-                            <directory>src/main/webapp/frontend</directory>
-                            <includes>
-                                <include>bower_components/</include>
-                            </includes>
-                        </fileset>
                     </filesets>
                 </configuration>
             </plugin>
@@ -169,13 +163,6 @@
             from GitHub -->
         <!--Do not use with production mode -->
         <profile>
-            <id>bower</id>
-            <activation>
-                <property>
-                    <name>useBower</name>
-                </property>
-            </activation>
-
             <properties>
                 <buildtools.directory>build-tools</buildtools.directory>
 
