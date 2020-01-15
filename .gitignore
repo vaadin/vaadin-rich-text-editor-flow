@@ -5,7 +5,6 @@ vaadin-rich-text-editor-flow-integration-tests/error-screenshots/
 **/build-tools/node
 **/build-tools/node_modules
 **/package-lock.json
-**/bower_components/
 .classpath
 .project
 .settings
@@ -16,3 +15,5 @@ vaadin-rich-text-editor-flow-integration-tests/error-screenshots/
 package*.json
 webpack.*.js
 node_modules/
+pnpm-lock.yaml
+tsconfig.json
