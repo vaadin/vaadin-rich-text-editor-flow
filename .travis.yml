@@ -8,6 +8,7 @@ script: mvn -B clean verify -Dvaadin.productionMode -Dcom.vaadin.testbench.Param
 branches:
   only:
     - master
+    - /^\d+\.\d+$/
 
 env:
   matrix:
