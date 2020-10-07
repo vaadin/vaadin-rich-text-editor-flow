@@ -1,6 +1,6 @@
  ⚠️ **This repository is deprecated**
 - Sources for this flow component can be found at https://github.com/vaadin/vaadin-flow-component
-- Tickets has been moved to the web component repository https://github.com/vaadin/<vaadin-component>
+- Tickets has been moved to the web component repository https://github.com/vaadin/vaadin-rich-text-editor/issues
 
 
 # Vaadin Rich Text Editor for Flow
