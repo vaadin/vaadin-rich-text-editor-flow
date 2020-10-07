@@ -1,3 +1,8 @@
+ ⚠️ **This repository is deprecated**
+- Sources for this flow component can be found at https://github.com/vaadin/vaadin-flow-component
+- Tickets has been moved to the web component repository https://github.com/vaadin/<vaadin-component>
+
+
 # Vaadin Rich Text Editor for Flow
 
 Vaadin Rich Text Editor for Flow is a UI component add-on for Vaadin which provides rich text editor functionality.
